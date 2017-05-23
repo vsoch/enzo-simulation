@@ -19,6 +19,7 @@ mkdir -p /data/jobs
 
 # Download repo
 git clone https://github.com/vsoch/enzo-simulation
+mv enzo-simulation /code
 # Likely we will move scripts here to prepare for running, not done yet
 
 # Tell user python version
@@ -42,8 +43,5 @@ echo "Configuration with linux-gnu shown above."
 
 %runscript
 
-echo "Vanessa will write me when she tries stuff out!"
-
-# Build and Submission Procedure:
-# ./scripts/gen_job_dirs.sh
-# ./scripts/submit_jobs.sh
+echo "Usage: singularity exec -B /scratch/data:/data enzo.img /code/scripts/create_job_dirs.sh 10"
+echo "       singularity exec -B /scratch/data:/data enzo.img /code/scripts/launch_jobs.sh 10"
