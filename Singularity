@@ -8,12 +8,12 @@ export PATH
 %post
 
 # Install vim and spack
-apt-get update && apt-get install -y vim git wget \
-                                     python python-pip \ 
-                                     gfortran g++ \
-                                     libhdf5-serial-dev \
-                                     csh libcr-dev mpich2 \ 
-                                     mpich2-doc ssh mercurial
+apt-get update && apt-get install -y vim git wget
+apt-get install -y python python-pip 
+apt-get install -y gfortran g++
+apt-get install -y libhdf5-serial-dev
+apt-get install -y csh libcr-dev mpich2 
+apt-get install -y  mpich2-doc mercurial
 
 mkdir -p /data/jobs
 
