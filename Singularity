@@ -51,11 +51,12 @@ if [ $# -lt 1 ]; then
 else
     num="$1"
     case ${num} in
+        -h|--help|-H)
+            echo "Usage: singularity run -B /host/data:/data enzo.img [num]"
+            echo "e.g.,  singularity run -B /scratch/data:/data enzo.img 10"
+            exit 1;
         ''|*[!0-9]*) 
             echo "You must pass a number as the first argument."; exit 2;;
-        -h|--help|-H) 
-            echo "Usage: singularity run -B /host/data:/data enzo.img $num"
-            echo "e.g.,  singularity run -B /scratch/data:/data enzo.img 10";;
         *) ;;
     esac
 fi;
