@@ -10,9 +10,6 @@
 # Prep modules and load default modules
 #. /etc/bash.bashrc.local
 
-# Get spack working
-source ${base_dir}/scripts/base-env.sh
-
 # Sanitize modules
 module unload gcc
 
@@ -23,9 +20,5 @@ fi;
 module load openmpi/1.10.2/gcc
 
 mpi="openmpi@${mpi_version}"
-
-# Find appropriate enzo
-spack module loads -nm --dependencies "enzo@2.5%${compiler} mode=${optimization_level} ^hdf5@1.8.16%${compiler}~crabyuilt+mpi ^${mpi}%${compiler}" > spack_env.sh
-source spack_env.sh
 
 mpirun -n 32 -N 16 -d 2 enzo -d gas_plus_dm_amr_multiphys.enzo > log.txt

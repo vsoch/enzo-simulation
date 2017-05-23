@@ -1,0 +1,60 @@
+#
+#  Generates initial grid and particle fields for a single-grid
+#    CDM simulation - that is to say, a cosmology simulation 
+#    where the initial conditions are not nested.
+#
+#  Note:  This file is by inits.exe with the command line 
+#    'inits.exe -d gas_plus_dm.inits' and outputs four files, called
+#    GridDensity, GridVelocities, ParticlePositions, and 
+#    ParticleVelocities.  Enzo then reads these files in using its
+#    own parameter file.
+#
+#  Written by Brian O'Shea (oshea@msu.edu)
+#
+
+#
+#  Cosmology Parameters
+#
+# From PDG
+CosmologyOmegaMatterNow    = 0.308
+# From PDG
+CosmologyOmegaLambdaNow    = 0.692
+# From PDG
+CosmologyOmegaBaryonNow      = 0.0484
+# From PDG  
+CosmologyHubbleConstantNow = 0.678
+CosmologyComovingBoxSize     = 10.0    // in Mpc/h
+CosmologyInitialRedshift     = 99.0
+
+#
+#  Power spectrum Parameters
+#
+PowerSpectrumType            = 11             // Eisenstein & Hu
+# From PDG
+PowerSpectrumSigma8          = 0.815
+# From PDG
+PowerSpectrumPrimordialIndex = 0.968
+PowerSpectrumRandomSeed      = -12345931
+
+#
+#  Grid info
+#
+Rank                = 3
+GridDims            = 32 32 32
+InitializeGrids     = 1
+GridRefinement      = 1
+
+#
+#  Particle info
+#
+ParticleDims        = 32 32 32
+InitializeParticles = 1
+ParticleRefinement  = 1
+
+#
+#  Overall field parameters
+#
+ParticlePositionName = ParticlePositions
+ParticleVelocityName = ParticleVelocities
+GridDensityName      = GridDensity
+GridVelocityName     = GridVelocities

@@ -20,7 +20,7 @@ mkdir -p /data/jobs
 # Download repo
 git clone https://github.com/vsoch/enzo-simulation
 mv enzo-simulation /code
-# Likely we will move scripts here to prepare for running, not done yet
+chmod -R u+x /code/scripts
 
 # Tell user python version
 echo "Python version:"
@@ -43,5 +43,29 @@ echo "Configuration with linux-gnu shown above."
 
 %runscript
 
-echo "Usage: singularity exec -B /scratch/data:/data enzo.img /code/scripts/create_job_dirs.sh 10"
-echo "       singularity exec -B /scratch/data:/data enzo.img /code/scripts/launch_jobs.sh 10"
+# Get job number
+if [ $# -lt 1 ]; then
+    echo "You must pass the job number."
+    echo "Usage: singularity run -B /scratch/data:/data enzo.img 10"
+    exit 1
+else
+    num="$1"
+    case ${num} in
+        ''|*[!0-9]*) 
+            echo "You must pass a number as the first argument."; exit 2;;
+        -h|--help|-H) 
+            echo "Usage: singularity run -B /host/data:/data enzo.img $num"
+            echo "e.g.,  singularity run -B /scratch/data:/data enzo.img 10";;
+        *) ;;
+    esac
+fi;
+
+# Create the job directory, if doesn't exist
+jobdir="/data/jobs/${num}"
+if [ ! -d "${jobdir}" ]; then
+    echo "Creating job directory ${num}"
+    cp -r /code/scripts/Init "${jobdir}"
+fi
+
+cd $jobdir
+/bin/bash /code/scripts/job.pbs

@@ -20,6 +20,6 @@ job=0
 while [ ${job} -lt ${num} ]; do
     echo "Creating job directory ${job}"
     mkdir -p ${base_dir}/jobs
-    cp -r "${base_dir}/${job_type}/Init" "${base_dir}/jobs/${job}"
+    cp -r /code/scripts/Init "${base_dir}/jobs/${job}"
     job=$(expr ${job} + 1)
 done;
