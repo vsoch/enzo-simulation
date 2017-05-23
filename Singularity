@@ -30,7 +30,7 @@ python --version
 cd / && wget https://bitbucket.org/enzo/enzo-dev/get/enzo-2.5.tar.bz2
 mkdir enzo && tar xvjf enzo-2.5.tar.bz2 -C enzo --strip-components 1
 cd enzo && ./configure # requires csh
-cd enzo/src/enzo
+cd /enzo/src/enzo
 
 # What machine configurations are available?
 # ls Make.mach.* 
