@@ -28,9 +28,8 @@ job=0
 while [ ${job} -lt ${num} ]; do
     job_dir="${host_data_dir}/jobs/${job}"
     if [ ! -e "${job_dir}/RunFinished" ]; then
-        cd "${job_dir}"
         echo "Submitting job ${job_num}..."
-        qsub -N "${job_type}_${compiler_vendor}_${compiler_version}_${optimization_level}_${job_num}" -d ${job_dir} run_job.sh $job
+        qsub -N "${compiler_vendor}_${compiler_version}_${optimization_level}_${job_num}" -o ${job_dir} run_job.sh $job
 	fi;
 	job=$(expr ${job} + 1)
 done;
