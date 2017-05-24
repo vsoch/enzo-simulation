@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Load singularity
-module load singularity
-enzo="/scratch/users/vsochat/DATA/enzo.img"
-
 # Get number of jobs
 if [ $# -lt 1 ]; then
     echo "You need to pass the number of jobs."
@@ -19,6 +15,9 @@ case ${num} in
 esac
 
 host_data_dir="/scratch/users/vsochat/DATA/physics"
+
+# Note: most of this stuff seems to just be for naming the job
+# probably not entirely necessary.
 compiler_version="1.10.2"
 compiler_vendor="gcc"
 optimization_level="high"

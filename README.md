@@ -123,16 +123,15 @@ which singularity
 
 ```
 
-Now let's say we want to run 10 jobs. We want the container to use `/scratch/users/vsochat/DATA/physics` as our data directory (meaning the folder `jobs` with our enzo analyses will be created inside. This is an important distinction - inside the container, operations will run relative to `/data`. However, from outside the container we have this directory represented as `/scratch/users/vsochat/DATA/physics.` Also note that our container is located one level above that at `/scratch/users/vsochat/DATA`. Thus, to run our job for N=10, we would do the following, represented in [scripts/launch_jobs.sh](scripts/launch_jobs.sh):
+Now let's say we want to run 10 jobs. We want the container to use `/scratch/users/vsochat/DATA/physics` as our data directory (meaning the folder `jobs` with our enzo analyses, directories labeled 0-N) will be created inside. This is an important distinction - inside the container, operations will run relative to `/data`. However, from outside the container we have this directory represented as `/scratch/users/vsochat/DATA/physics.` Also note that our container is located one level above that at `/scratch/users/vsochat/DATA`. Thus, to run our job for N=10, we want to have the following scripts on our cluster, along with the image itself (enzo.img) that we built above:
 
-**Note: I am still testing the below, likely a bug or too!**
+ - [launch_jobs.sh](scripts/launch_jobs.sh)
+ - [run_job.sh](scripts/run_jobs.sh)
+
+The first is basically a for loop to send a bunch of commands to the batch manager with qsub, each submitting a script to run the file [run_jobs.sh](scripts/run_jobs.sh). You don't need to use bash scripts, or even this approach, the general idea is that you want to send the command our to your cluster nodes to load the modules on the host, load singularity, and then run the container. The script [scripts/launch_jobs.sh](scripts/launch_jobs.sh) is an example of the "for loop" part of this, run on the host:
 
 ```
 #!/bin/bash
-
-# Load singularity
-module load singularity
-enzo="/scratch/users/vsochat/DATA/enzo.img"
 
 # Get number of jobs
 if [ $# -lt 1 ]; then
@@ -158,11 +157,26 @@ job=0
 while [ ${job} -lt ${num} ]; do
     job_dir="${host_data_dir}/jobs/${job}"
     if [ ! -e "${job_dir}/RunFinished" ]; then
-        cd "${job_dir}"
         echo "Submitting job ${job_num}..."
-        qsub -N "${job_type}_${compiler_vendor}_${compiler_version}_${optimization_level}_${job_num}" -d ${job_dir} singularity run $enzo $job_num 
+        qsub -N "${compiler_vendor}_${compiler_version}_${optimization_level}_${job_num}" -o ${job_dir} run_job.sh $job
 	fi;
 	job=$(expr ${job} + 1)
 done;
 ```
 
+Note that the script [run_job.sh](scripts/run_job.sh) is located outside the image, and called by qsub. It is this script that loads required modules (on the host) and then executes the container via a call to singularity, which has the main job script (job.pbs) inside.
+
+```
+#!/bin/bash
+
+module load singularity
+module unload gcc
+module load gcc/4.8.1
+module load openmpi/1.10.2/gcc
+
+job_num=$1
+
+enzo="/scratch/users/vsochat/DATA/enzo.img"
+
+singularity run $enzo $job_num
+```
