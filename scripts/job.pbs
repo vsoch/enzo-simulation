@@ -9,16 +9,4 @@
 
 # Prep modules and load default modules
 #. /etc/bash.bashrc.local
-
-# Sanitize modules
-module unload gcc
-
-if [ "${compiler_vendor}" = "gcc" ]; then
-module load gcc/4.8.1
-fi;
-
-module load openmpi/1.10.2/gcc
-
-mpi="openmpi@${mpi_version}"
-
 mpirun -n 32 -N 16 -d 2 enzo -d gas_plus_dm_amr_multiphys.enzo > log.txt

@@ -65,6 +65,7 @@ fi;
 jobdir="/data/jobs/${num}"
 if [ ! -d "${jobdir}" ]; then
     echo "Creating job directory ${num}"
+    mkdir -p ${jobdir}
     cp -r /code/scripts/Init "${jobdir}"
 fi
 
