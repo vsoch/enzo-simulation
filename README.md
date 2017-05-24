@@ -164,7 +164,7 @@ while [ ${job} -lt ${num} ]; do
 done;
 ```
 
-Note that the script [run_job.sh](scripts/run_job.sh) is located outside the image, and called by qsub. It is this script that loads required modules (on the host) and then executes the container via a call to singularity, which has the main job script (job.pbs) inside.
+Note that the script [run_job.sh](scripts/run_job.sh) is located outside the image, and called by qsub. It is this script that loads required modules (on the host) and then executes the container via a call to singularity, which has the main job script (job.pbs) inside. We bind the host data directory to `/data` in the container using the command `-B`, and we do this so that it is writable.
 
 ```
 #!/bin/bash
@@ -176,7 +176,8 @@ module load openmpi/1.10.2/gcc
 
 job_num=$1
 
+host_data="/scratch/users/vsochat/DATA/physics"
 enzo="/scratch/users/vsochat/DATA/enzo.img"
 
-singularity run $enzo $job_num
+singularity run -B $host_data:/data $enzo $job_num
 ```
