@@ -56,7 +56,7 @@ else
             echo "e.g.,  singularity run -B /scratch/data:/data enzo.img 10"
             exit 1;
         ''|*[!0-9]*) 
-            echo "You must pass a number as the first argument."; exit 2;;
+            echo "You must pass a number as the first argument."; exit 2;
         *) ;;
     esac
 fi;
